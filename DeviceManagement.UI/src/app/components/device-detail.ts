@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Device } from '../models/device';
 import { DeviceService } from '../services/device';
@@ -10,7 +10,7 @@ import { DeviceService } from '../services/device';
   styleUrl: './device-detail.css',
 })
 export class DeviceDetail implements OnInit {
-  device: Device | null = null;
+  device = signal<Device | null>(null);
 
   constructor(
     private route: ActivatedRoute,
@@ -20,7 +20,7 @@ export class DeviceDetail implements OnInit {
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.deviceService.getById(id).subscribe({
-      next: (data) => (this.device = data),
+      next: (data) => this.device.set(data),
       error: (err) => console.error('Failed to load device', err),
     });
   }

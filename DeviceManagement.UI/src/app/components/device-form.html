@@ -1,8 +1,8 @@
 <div class="form-card">
-  <h2>{{ isEditMode ? 'Edit Device' : 'Add New Device' }}</h2>
+  <h2>{{ isEditMode() ? 'Edit Device' : 'Add New Device' }}</h2>
 
-  @if (errorMessage) {
-    <div class="error">{{ errorMessage }}</div>
+  @if (errorMessage()) {
+    <div class="error">{{ errorMessage() }}</div>
   }
 
   <form #deviceForm="ngForm" (ngSubmit)="deviceForm.valid && onSubmit()">
@@ -52,7 +52,7 @@
 
     <div class="actions">
       <button type="submit" class="btn-primary" [disabled]="!deviceForm.valid">
-        {{ isEditMode ? 'Save Changes' : 'Create Device' }}
+        {{ isEditMode() ? 'Save Changes' : 'Create Device' }}
       </button>
       <button type="button" class="btn-secondary" (click)="onCancel()">Cancel</button>
     </div>

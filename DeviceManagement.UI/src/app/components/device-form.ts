@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Device } from '../models/device';
@@ -23,8 +23,8 @@ export class DeviceForm implements OnInit {
     description: '',
   };
 
-  isEditMode = false;
-  errorMessage = '';
+  isEditMode = signal(false);
+  errorMessage = signal('');
 
   constructor(
     private route: ActivatedRoute,
@@ -35,21 +35,21 @@ export class DeviceForm implements OnInit {
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.isEditMode = true;
+      this.isEditMode.set(true);
       this.deviceService.getById(Number(id)).subscribe({
         next: (data) => (this.device = data),
-        error: () => (this.errorMessage = 'Device not found.'),
+        error: () => this.errorMessage.set('Device not found.'),
       });
     }
   }
 
   onSubmit(): void {
-    this.errorMessage = '';
+    this.errorMessage.set('');
 
-    if (this.isEditMode) {
+    if (this.isEditMode()) {
       this.deviceService.update(this.device.id, this.device).subscribe({
         next: () => this.router.navigate(['/devices', this.device.id]),
-        error: () => (this.errorMessage = 'Failed to update device.'),
+        error: () => this.errorMessage.set('Failed to update device.'),
       });
     } else {
       // Check if a device with the same name already exists
@@ -59,15 +59,15 @@ export class DeviceForm implements OnInit {
             (d) => d.name.toLowerCase() === this.device.name.toLowerCase()
           );
           if (exists) {
-            this.errorMessage = 'A device with this name already exists.';
+            this.errorMessage.set('A device with this name already exists.');
             return;
           }
           this.deviceService.create(this.device).subscribe({
             next: (created) => this.router.navigate(['/devices', created.id]),
-            error: () => (this.errorMessage = 'Failed to create device.'),
+            error: () => this.errorMessage.set('Failed to create device.'),
           });
         },
-        error: () => (this.errorMessage = 'Failed to check existing devices.'),
+        error: () => this.errorMessage.set('Failed to check existing devices.'),
       });
     }
   }

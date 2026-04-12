@@ -16,14 +16,14 @@ public class DeviceService : IDeviceService
     public async Task<IEnumerable<Device>> GetAllAsync()
     {
         return await _context.Devices
-            .Include(d => d.User)
+            .Include(d => d.AssignedToUser)
             .ToListAsync();
     }
 
     public async Task<Device?> GetByIdAsync(int id)
     {
         return await _context.Devices
-            .Include(d => d.User)
+            .Include(d => d.AssignedToUser)
             .FirstOrDefaultAsync(d => d.Id == id);
     }
 
@@ -48,7 +48,7 @@ public class DeviceService : IDeviceService
         existing.Processor = device.Processor;
         existing.RamAmount = device.RamAmount;
         existing.Description = device.Description;
-        existing.UserId = device.UserId;
+        existing.AssignedToUserId = device.AssignedToUserId;
 
         await _context.SaveChangesAsync();
         return existing;

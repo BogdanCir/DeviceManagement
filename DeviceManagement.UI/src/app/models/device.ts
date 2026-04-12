@@ -8,13 +8,12 @@ export interface Device {
   processor: string;
   ramAmount: string;
   description?: string;
-  userId?: number;
-  user?: User;
+  assignedToUserId?: string;
+  assignedToUser?: AppUser;
 }
 
-export interface User {
-  id: number;
+export interface AppUser {
+  id: string;
+  email: string;
   name: string;
-  role: string;
-  location: string;
 }

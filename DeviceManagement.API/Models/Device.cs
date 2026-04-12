@@ -38,6 +38,6 @@ public class Device
     public string? Description { get; set; }
 
     // Navigation: which user currently has this device
-    public int? UserId { get; set; }
-    public User? User { get; set; }
+    public string? AssignedToUserId { get; set; }
+    public AppUser? AssignedToUser { get; set; }
 }

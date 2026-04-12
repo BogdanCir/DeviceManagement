@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Device } from '../models/device';
 import { DeviceService } from '../services/device';
@@ -10,7 +10,7 @@ import { DeviceService } from '../services/device';
   styleUrl: './device-list.css',
 })
 export class DeviceList implements OnInit {
-  devices: Device[] = [];
+  devices = signal<Device[]>([]);
 
   constructor(private deviceService: DeviceService) {}
 
@@ -20,7 +20,7 @@ export class DeviceList implements OnInit {
 
   loadDevices(): void {
     this.deviceService.getAll().subscribe({
-      next: (data) => (this.devices = data),
+      next: (data) => this.devices.set(data),
       error: (err) => console.error('Failed to load devices', err),
     });
   }

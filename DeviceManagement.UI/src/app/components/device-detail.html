@@ -1,40 +1,40 @@
-@if (device) {
+@if (device()) {
   <div class="detail-card">
-    <h2>{{ device.name }}</h2>
+    <h2>{{ device()!.name }}</h2>
 
     <table>
       <tr>
         <th>Manufacturer</th>
-        <td>{{ device.manufacturer }}</td>
+        <td>{{ device()!.manufacturer }}</td>
       </tr>
       <tr>
         <th>Type</th>
-        <td>{{ device.type }}</td>
+        <td>{{ device()!.type }}</td>
       </tr>
       <tr>
         <th>Operating System</th>
-        <td>{{ device.operatingSystem }} {{ device.osVersion }}</td>
+        <td>{{ device()!.operatingSystem }} {{ device()!.osVersion }}</td>
       </tr>
       <tr>
         <th>Processor</th>
-        <td>{{ device.processor }}</td>
+        <td>{{ device()!.processor }}</td>
       </tr>
       <tr>
         <th>RAM</th>
-        <td>{{ device.ramAmount }}</td>
+        <td>{{ device()!.ramAmount }}</td>
       </tr>
       <tr>
         <th>Description</th>
-        <td>{{ device.description || 'No description' }}</td>
+        <td>{{ device()!.description || 'No description' }}</td>
       </tr>
       <tr>
         <th>Assigned To</th>
-        <td>{{ device.user ? device.user.name + ' (' + device.user.role + ', ' + device.user.location + ')' : 'Unassigned' }}</td>
+        <td>{{ device()!.assignedToUser ? device()!.assignedToUser!.name + ' (' + device()!.assignedToUser!.email + ')' : 'Unassigned' }}</td>
       </tr>
     </table>
 
     <div class="actions">
-      <a [routerLink]="['/devices', device.id, 'edit']" class="btn-primary">Edit</a>
+      <a [routerLink]="['/devices', device()!.id, 'edit']" class="btn-primary">Edit</a>
       <a routerLink="/devices" class="btn-secondary">Back to List</a>
     </div>
   </div>
