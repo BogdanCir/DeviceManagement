@@ -1,5 +1,7 @@
+using System.Security.Claims;
 using DeviceManagement.API.Models;
 using DeviceManagement.API.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DeviceManagement.API.Controllers;
@@ -62,5 +64,31 @@ public class DevicesController : ControllerBase
             return NotFound();
 
         return NoContent();
+    }
+
+    // POST api/devices/5/assign
+    [Authorize]
+    [HttpPost("{id}/assign")]
+    public async Task<IActionResult> Assign(int id)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+        var (success, error) = await _deviceService.AssignAsync(id, userId);
+        if (!success)
+            return BadRequest(new { message = error });
+
+        return Ok(new { message = "Device assigned successfully." });
+    }
+
+    // POST api/devices/5/unassign
+    [Authorize]
+    [HttpPost("{id}/unassign")]
+    public async Task<IActionResult> Unassign(int id)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+        var (success, error) = await _deviceService.UnassignAsync(id, userId);
+        if (!success)
+            return BadRequest(new { message = error });
+
+        return Ok(new { message = "Device unassigned successfully." });
     }
 }

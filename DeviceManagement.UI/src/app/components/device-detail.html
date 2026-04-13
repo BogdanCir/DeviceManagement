@@ -2,6 +2,10 @@
   <div class="detail-card">
     <h2>{{ device()!.name }}</h2>
 
+    @if (message()) {
+      <div class="error">{{ message() }}</div>
+    }
+
     <table>
       <tr>
         <th>Manufacturer</th>
@@ -29,12 +33,27 @@
       </tr>
       <tr>
         <th>Assigned To</th>
-        <td>{{ device()!.assignedToUser ? device()!.assignedToUser!.name + ' (' + device()!.assignedToUser!.email + ')' : 'Unassigned' }}</td>
+        <td>
+          @if (device()!.assignedToUser) {
+            {{ device()!.assignedToUser!.name }} ({{ device()!.assignedToUser!.email }})
+          } @else {
+            Unassigned
+          }
+        </td>
       </tr>
     </table>
 
     <div class="actions">
+      @if (authService.isLoggedIn()) {
+        @if (!device()!.assignedToUserId) {
+          <button class="btn-primary" (click)="assignToMe()">Assign to Me</button>
+        }
+        @if (device()!.assignedToUser && device()!.assignedToUser!.email === authService.currentUser()?.email) {
+          <button class="btn-secondary" (click)="unassignFromMe()">Unassign</button>
+        }
+      }
       <a [routerLink]="['/devices', device()!.id, 'edit']" class="btn-primary">Edit</a>
+      <button class="btn-danger" (click)="deleteDevice()">Delete</button>
       <a routerLink="/devices" class="btn-secondary">Back to List</a>
     </div>
   </div>

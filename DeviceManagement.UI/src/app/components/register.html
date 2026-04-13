@@ -1,0 +1,32 @@
+<div class="auth-card">
+  <h2>Register</h2>
+
+  @if (errorMessage()) {
+    <div class="error">{{ errorMessage() }}</div>
+  }
+
+  <form #registerForm="ngForm" (ngSubmit)="registerForm.valid && onSubmit()">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input id="name" name="name" [(ngModel)]="name" required />
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" [(ngModel)]="email" required />
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password (min 6 characters)</label>
+      <input id="password" name="password" type="password" [(ngModel)]="password" required minlength="6" />
+    </div>
+
+    <button type="submit" class="btn-primary btn-full" [disabled]="!registerForm.valid">
+      Register
+    </button>
+  </form>
+
+  <p class="switch-link">
+    Already have an account? <a routerLink="/login">Login</a>
+  </p>
+</div>
