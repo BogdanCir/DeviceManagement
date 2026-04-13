@@ -50,6 +50,7 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddScoped<IDeviceService, DeviceService>();
+builder.Services.AddHttpClient<IAiService, GeminiAiService>();
 
 var app = builder.Build();
 

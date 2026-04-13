@@ -29,7 +29,16 @@
       </tr>
       <tr>
         <th>Description</th>
-        <td>{{ device()!.description || 'No description' }}</td>
+        <td>
+          {{ device()!.description || 'No description' }}
+          <button class="btn-ai" (click)="generateDescription()" [disabled]="generating()">
+            @if (generating()) {
+              Generating...
+            } @else {
+              AI Generate
+            }
+          </button>
+        </td>
       </tr>
       <tr>
         <th>Assigned To</th>

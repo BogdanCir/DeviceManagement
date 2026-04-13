@@ -13,6 +13,7 @@ import { AuthService } from '../services/auth';
 export class DeviceDetail implements OnInit {
   device = signal<Device | null>(null);
   message = signal('');
+  generating = signal(false);
 
   constructor(
     private route: ActivatedRoute,
@@ -46,6 +47,21 @@ export class DeviceDetail implements OnInit {
     this.deviceService.unassign(this.device()!.id).subscribe({
       next: () => this.loadDevice(),
       error: (err) => this.message.set(err.error?.message || 'Failed to unassign device.'),
+    });
+  }
+
+  generateDescription(): void {
+    this.message.set('');
+    this.generating.set(true);
+    this.deviceService.generateDescription(this.device()!.id).subscribe({
+      next: () => {
+        this.generating.set(false);
+        this.loadDevice();
+      },
+      error: (err) => {
+        this.generating.set(false);
+        this.message.set(err.error?.message || 'Failed to generate description.');
+      },
     });
   }
 

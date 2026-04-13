@@ -40,3 +40,19 @@ th {
   text-decoration: none;
   display: inline-block;
 }
+
+.btn-ai {
+  margin-left: 10px;
+  padding: 4px 10px;
+  font-size: 12px;
+  background-color: #6f42c1;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.btn-ai:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
